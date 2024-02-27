@@ -10,6 +10,10 @@
     "productName": "shakshuka",
     "version": "0.1.0"
   },
+  "tauri": {
+    "allowlist": {
+      "all": false
+    },
     "systemTray": {
       "iconPath": "icons/icon.png",
       "iconAsTemplate": true

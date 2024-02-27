@@ -43,7 +43,6 @@ fn main() {
         .on_window_event(|e| {
             let event = e.event();
             if let WindowEvent::CloseRequested { api, .. } = event {
-                println!("tried to exit");
                 e.window().hide().expect("could not hide window");
                 api.prevent_close();
             }
