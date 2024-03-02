@@ -1,27 +1,30 @@
-<script>
+<script lang="ts">
   import ModeToggle from '@/components/ModeToggle.svelte';
   import '../app.pcss';
+  import { onMount } from 'svelte';
+  import { theme } from '$lib/stores/themeStore';
 
-  const getThemePreference = () => {
-    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-      return localStorage.getItem('theme');
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
+  onMount(() => {
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+    theme.set(systemTheme);
 
-  const isDark = getThemePreference() === 'dark';
-  document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
+    const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+    const changeHandler = (e: MediaQueryListEvent) => {
+      theme.set(e.matches ? 'dark' : 'light');
+    };
+    mediaQueryList.addEventListener('change', changeHandler);
 
-  if (typeof localStorage !== 'undefined') {
-    const observer = new MutationObserver(() => {
-      const isDark = document.documentElement.classList.contains('dark');
-      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    const unsubscribe = theme.subscribe((value) => {
+      document.documentElement.classList[value === 'dark' ? 'add' : 'remove']('dark');
     });
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
-  }
+
+    return () => {
+      unsubscribe();
+      mediaQueryList.removeEventListener('change', changeHandler);
+    };
+  });
 </script>
 
 <ModeToggle />

@@ -4,3 +4,4 @@
 #   - type: description of what the short-form "type" means
 scopes:
   timer: the radial progress timer that display the current time elapsed
+  dark-mode: the UI logic to determin if the application should render in dark mode

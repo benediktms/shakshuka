@@ -2,35 +2,11 @@
   import { Sun } from 'lucide-svelte';
   import { Moon } from 'lucide-svelte';
   import { Button } from '$lib/components/ui/button';
-  import { onDestroy, onMount } from 'svelte';
-
-  let theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+  import { theme } from '$lib/stores/themeStore';
 
   const toggleTheme = () => {
-    theme = theme === 'light' ? 'dark' : 'light';
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    theme.update((current) => (current === 'light' ? 'dark' : 'light'));
   };
-
-  const handleSystemThemeChange = (_: unknown) => {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      theme = 'dark';
-    } else {
-      theme = 'light';
-    }
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  };
-
-  onMount(() => {
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .addEventListener('change', handleSystemThemeChange);
-  });
-
-  onDestroy(() => {
-    window
-      .matchMedia('(prefers-color-scheme: dark)')
-      .removeEventListener('change', handleSystemThemeChange);
-  });
 </script>
 
 <Button on:click={toggleTheme} variant="outline" size="icon">
