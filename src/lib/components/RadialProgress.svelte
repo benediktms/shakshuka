@@ -1,11 +1,14 @@
 <script lang="ts">
   export let elapsed: number;
+  export let totalMinutes = 1;
 
-  const full = 25 * 60;
+  const full = totalMinutes * 60;
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
 
   $: dashOffset = circumference * (1 - elapsed / full);
+  $: minutes = elapsed / 60;
+  $: seconds = elapsed % 60;
 </script>
 
 <div class="relative h-40 w-40">
@@ -19,7 +22,7 @@
       fill="transparent"
     ></circle>
     <circle
-      class="progress-ring stroke-current text-indigo-500 dark:text-indigo-400"
+      class="progress-ring stroke-current text-emerald-500 dark:text-emerald-400"
       stroke-width="10"
       stroke-linecap="round"
       cx="50"
@@ -37,7 +40,7 @@
       text-anchor="middle"
       alignment-baseline="middle"
     >
-      70%
+      {Math.floor(minutes)}:{seconds < 10 ? `0${seconds}` : seconds}
     </text>
   </svg>
 </div>
