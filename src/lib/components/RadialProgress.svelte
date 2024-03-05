@@ -1,6 +1,6 @@
 <script lang="ts">
   export let elapsed: number;
-  export let totalMinutes = 1;
+  export let totalMinutes = 25;
 
   const full = totalMinutes * 60;
   const radius = 40;
@@ -11,7 +11,7 @@
   $: seconds = elapsed % 60;
 </script>
 
-<div class="relative h-40 w-40">
+<div class="h-40 w-40">
   <svg class="h-full w-full" viewBox="0 0 100 100">
     <circle
       class="stroke-current text-gray-200 dark:text-gray-700"
