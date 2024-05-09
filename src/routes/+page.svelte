@@ -1,53 +1,78 @@
 <script lang="ts">
-  import RadialProgress from '@/components/RadialProgress.svelte';
   import { Button } from '@/components/ui/button';
-  import { onDestroy } from 'svelte';
+  import RadialProgress from '@/components/RadialProgress.svelte';
+  import { onDestroy, onMount } from 'svelte';
 
-  let timer = 0;
-  let timeFrame = 1;
+  export let timeFrame: number;
+
+  type Interval = ReturnType<typeof setInterval>;
+
+  let timePassed: number = 0;
+  let interval: Interval | null = null;
+  let initalTimestamp: number | null = null;
+  let pauseTimestamp: number = 0;
+
   let isRunning = false;
 
-  let timerId: ReturnType<typeof setInterval> | null = null;
+  const startCount = (): void => {
+    isRunning = true;
+    if (interval) return;
 
-  export function startTimer() {
-    if (timer === timeFrame * 60) {
-      resetTimer();
-    }
+    initalTimestamp = Date.now();
 
-    timerId = setInterval(() => {
-      if (timer < timeFrame * 60) {
-        isRunning = true;
-        timer += 1;
-      } else {
-        stopTimer();
-        isRunning = false;
+    interval = setInterval(() => {
+      if (initalTimestamp !== null) {
+        timePassed = Date.now() - initalTimestamp + pauseTimestamp;
       }
-    }, 1000);
-  }
+    }, 100);
+  };
 
-  export function stopTimer() {
+  const pauseCount = (): void => {
     isRunning = false;
-    if (timerId) {
-      clearInterval(timerId);
-    }
-  }
 
-  export function resetTimer() {
-    timer = 0;
-  }
+    if (initalTimestamp !== null) {
+      pauseTimestamp += Date.now() - initalTimestamp;
+    }
+
+    if (interval) {
+      clearInterval(interval);
+      interval = null;
+    }
+  };
+
+  const resetCount = (): void => {
+    isRunning = false;
+    if (interval) {
+      clearInterval(interval);
+    }
+    initalTimestamp = null;
+    pauseTimestamp = 0;
+    interval = null;
+    timePassed = 0;
+  };
+
+  onMount(() => {
+    return () => {
+      if (interval !== null) {
+        clearInterval(interval);
+      }
+    };
+  });
 
   onDestroy(() => {
-    stopTimer();
+    if (interval) {
+      clearInterval(interval);
+    }
   });
 </script>
 
 <div class="container">
   <h1>Welcome to Shakshuka</h1>
-  <RadialProgress elapsed={timer} totalMinutes={timeFrame} />
+  <RadialProgress elapsed={Math.floor(timePassed / 1000)} totalMinutes={timeFrame} />
   {#if isRunning}
-    <Button on:click={stopTimer} disabled={!isRunning}>stop timer</Button>
+    <Button on:click={pauseCount} disabled={!isRunning}>stop timer</Button>
   {:else}
-    <Button on:click={startTimer} disabled={isRunning}>start timer</Button>
+    <Button on:click={startCount} disabled={isRunning}>start timer</Button>
   {/if}
-  <Button on:click={resetTimer}>reset timer</Button>
+  <Button on:click={resetCount}>reset timer</Button>
 </div>
