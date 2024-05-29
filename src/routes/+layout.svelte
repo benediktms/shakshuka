@@ -16,7 +16,7 @@
     };
     mediaQueryList.addEventListener('change', changeHandler);
 
-    const unsubscribe = theme.subscribe((value) => {
+    const unsubscribe = theme.subscribe(value => {
       document.documentElement.classList[value === 'dark' ? 'add' : 'remove']('dark');
     });
 

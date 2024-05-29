@@ -5,7 +5,7 @@
   import { theme } from '$lib/stores/themeStore';
 
   const toggleTheme = () => {
-    theme.update((current) => (current === 'light' ? 'dark' : 'light'));
+    theme.update(current => (current === 'light' ? 'dark' : 'light'));
   };
 </script>
 

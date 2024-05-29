@@ -9,7 +9,7 @@
 
   let timePassed: number = 0;
   let interval: Interval | null = null;
-  let initalTimestamp: number | null = null;
+  let initialTimestamp: number | null = null;
   let pauseTimestamp: number = 0;
 
   let isRunning = false;
@@ -18,11 +18,11 @@
     isRunning = true;
     if (interval) return;
 
-    initalTimestamp = Date.now();
+    initialTimestamp = Date.now();
 
     interval = setInterval(() => {
-      if (initalTimestamp !== null) {
-        timePassed = Date.now() - initalTimestamp + pauseTimestamp;
+      if (initialTimestamp !== null) {
+        timePassed = Date.now() - initialTimestamp + pauseTimestamp;
       }
     }, 100);
   };
@@ -30,8 +30,8 @@
   const pauseCount = (): void => {
     isRunning = false;
 
-    if (initalTimestamp !== null) {
-      pauseTimestamp += Date.now() - initalTimestamp;
+    if (initialTimestamp !== null) {
+      pauseTimestamp += Date.now() - initialTimestamp;
     }
 
     if (interval) {
@@ -45,7 +45,7 @@
     if (interval) {
       clearInterval(interval);
     }
-    initalTimestamp = null;
+    initialTimestamp = null;
     pauseTimestamp = 0;
     interval = null;
     timePassed = 0;
