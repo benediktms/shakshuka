@@ -1,8 +1,0 @@
-## commit_convention.yml
-## omit the commit_types to use the default angular-style commit types
-# commit_types:
-#   - type: description of what the short-form "type" means
-scopes:
-  timer: the radial progress timer that display the current time elapsed
-  dark-mode: the UI logic to determin if the application should render in dark mode
-  radial-progress: The radial progress component
