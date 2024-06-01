@@ -1,22 +1,11 @@
 <script lang="ts">
-  import Timer from '@/components/Timer/Timer.svelte';
-  import { invoke } from '@tauri-apps/api';
-  import { onMount } from 'svelte';
-  import type { TestRes } from '../bindings/TestRes';
-
-  let greeting: string;
-  let testData: TestRes;
-  async function getGreeting(name = 'Ben') {
-    greeting = await invoke('greet', { name });
-    testData = await invoke<TestRes>('test_command');
-  }
-
-  onMount(getGreeting);
 </script>
 
 <div class="container">
-  <h1>Welcome to Shakshuka</h1>
-  {greeting}
-  {JSON.stringify(testData)}
-  <Timer timeFrame={30} />
+  <div class="grid-gap-5 grid grid-cols-5">
+    <div class="border-2 border-solid border-red-600">col1</div>
+    <div class="border-2 border-solid border-red-600">col2</div>
+    <div class="border-2 border-solid border-red-600">col3</div>
+    <div class="col-span-2 border-2 border-solid border-red-600">col4+5</div>
+  </div>
 </div>

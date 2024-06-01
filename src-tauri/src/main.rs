@@ -4,7 +4,7 @@
 mod system_tray;
 
 use serde::{Deserialize, Serialize};
-use tauri::{CustomMenuItem, SystemTray, SystemTrayMenu, WindowEvent};
+use tauri::{CustomMenuItem, LogicalSize, Manager, Size, SystemTray, SystemTrayMenu, WindowEvent};
 use ts_rs::TS;
 
 use system_tray::system_tray_event_handler;
@@ -41,6 +41,18 @@ fn main() {
     let tray = SystemTray::new().with_menu(tray_menu);
 
     tauri::Builder::default()
+        .setup(|app| {
+            let window = app.get_window("main").unwrap();
+            match window.set_size(Size::Logical(LogicalSize {
+                width: 1300.0,
+                height: 800.0,
+            })) {
+                Err(err) => println!("{err}"),
+                Ok(res) => res,
+            }
+
+            Ok(())
+        })
         .system_tray(tray)
         .on_system_tray_event(system_tray_event_handler())
         .on_window_event(|e| {
