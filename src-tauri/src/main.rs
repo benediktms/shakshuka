@@ -1,11 +1,13 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+mod system_tray;
+
 use serde::{Deserialize, Serialize};
-use tauri::{
-    AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, WindowEvent,
-};
+use tauri::{CustomMenuItem, SystemTray, SystemTrayMenu, WindowEvent};
 use ts_rs::TS;
+
+use system_tray::system_tray_event_handler;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -25,27 +27,6 @@ fn test_command() -> TestRes {
     TestRes {
         msg: "This is a test message".to_string(),
         ex: 83839,
-    }
-}
-
-fn system_tray_event_handler() -> impl Fn(&AppHandle, SystemTrayEvent) {
-    |app, event| {
-        if let SystemTrayEvent::MenuItemClick { id, .. } = event {
-            match id.as_str() {
-                "quit" => {
-                    std::process::exit(0);
-                }
-                "hide" => {
-                    let window = app.get_window("main").unwrap();
-                    window.hide().unwrap();
-                }
-                "show" => {
-                    let window = app.get_window("main").unwrap();
-                    window.show().unwrap();
-                }
-                _ => {}
-            }
-        }
     }
 }
 
