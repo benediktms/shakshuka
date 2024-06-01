@@ -1,1 +1,3 @@
-bun lint
+pnpm prettier --write src/bindings/**/*
+git add src/bindings
+pnpm lint
