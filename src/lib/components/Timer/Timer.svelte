@@ -66,7 +66,7 @@
   });
 </script>
 
-<div>
+<div class={$$props.class}>
   <RadialProgress elapsed={Math.floor(timePassed / 1000)} totalMinutes={timeFrame} />
   {#if isRunning}
     <Button on:click={pauseCount} disabled={!isRunning}>stop timer</Button>
