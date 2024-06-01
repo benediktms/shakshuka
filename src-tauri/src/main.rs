@@ -1,14 +1,31 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
+use serde::{Deserialize, Serialize};
 use tauri::{
     AppHandle, CustomMenuItem, Manager, SystemTray, SystemTrayEvent, SystemTrayMenu, WindowEvent,
 };
+use ts_rs::TS;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
 fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
+}
+
+#[derive(Serialize, Deserialize, TS)]
+#[ts(export)]
+struct TestRes {
+    msg: String,
+    ex: u32,
+}
+
+#[tauri::command]
+fn test_command() -> TestRes {
+    TestRes {
+        msg: "This is a test message".to_string(),
+        ex: 83839,
+    }
 }
 
 fn system_tray_event_handler() -> impl Fn(&AppHandle, SystemTrayEvent) {
@@ -45,7 +62,6 @@ fn main() {
     tauri::Builder::default()
         .system_tray(tray)
         .on_system_tray_event(system_tray_event_handler())
-        .invoke_handler(tauri::generate_handler![greet])
         .on_window_event(|e| {
             let event = e.event();
             if let WindowEvent::CloseRequested { api, .. } = event {
@@ -53,6 +69,7 @@ fn main() {
                 api.prevent_close();
             }
         })
+        .invoke_handler(tauri::generate_handler![greet, test_command])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
