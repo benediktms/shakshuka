@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from '@/components/ui/button';
   import RadialProgress from '@/components/Timer/RadialProgress.svelte';
-  import { onDestroy, onMount } from 'svelte';
+  import { onMount } from 'svelte';
 
   export let timeFrame: number;
 
@@ -57,12 +57,6 @@
         clearInterval(interval);
       }
     };
-  });
-
-  onDestroy(() => {
-    if (interval) {
-      clearInterval(interval);
-    }
   });
 </script>
 
