@@ -6,7 +6,7 @@
   import ChevronsDown from 'lucide-svelte/icons/chevrons-down';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Badge } from '$ui/badge';
-  import type { Task } from '$lib/types';
+  import type { Task } from '$lib/components/TaskBoard/types';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };

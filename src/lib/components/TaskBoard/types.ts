@@ -16,3 +16,4 @@ export type TaskColumnId = Lowercase<
 >;
 
 export type TaskColumn = { id: TaskColumnId; name: Status; items: Task[] };
+export type ColumnType = 'targetable' | 'untargetable';

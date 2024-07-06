@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Board from '$lib/components/Board/Board.svelte';
-  import { type Task, type TaskColumn, Status } from '$lib/types';
+  import Board from '$lib/components/TaskBoard/Board.svelte';
+  import { type Task, type TaskColumn, Status } from '$lib/components/TaskBoard/types';
 
   const tasks: Array<Task> = [
     {

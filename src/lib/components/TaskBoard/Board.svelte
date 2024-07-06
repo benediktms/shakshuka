@@ -1,6 +1,6 @@
 <script lang="ts">
   import Column from './Column.svelte';
-  import type { TaskColumn, Task } from '$lib/types';
+  import type { TaskColumn, Task } from '$lib/components/TaskBoard/types';
 
   export let columns: TaskColumn[];
   export let updateCallback: (tasks: TaskColumn[]) => void;

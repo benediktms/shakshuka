@@ -1,8 +1,8 @@
 <script lang="ts">
   import { flip } from 'svelte/animate';
   import { dndzone, type DndEvent } from 'svelte-dnd-action';
-  import { Status, type Task, type TaskColumnId } from '../../types';
-  import TaskCard from '$lib/components/TaskCard.svelte';
+  import { Status, type Task, type TaskColumnId } from './types';
+  import TaskCard from '$lib/components/TaskBoard/TaskCard.svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { cn } from '$lib/utils';
 
