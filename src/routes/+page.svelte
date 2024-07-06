@@ -2,20 +2,13 @@
   import Board from '$lib/components/TaskBoard/Board.svelte';
   import { type Task, type TaskColumn, Status } from '$lib/components/TaskBoard/types';
 
-  const tasks: Array<Task> = [
-    {
-      id: 'TASK-1',
-      title: 'Task',
-      description:
-        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam dignissimos vitae quos excepturi laboriosam ut consequatur sed dolorem amet reiciendis eos quas voluptas voluptatem dicta, minima, corporis soluta libero sunt!',
-      status: Status.TODO
-    },
-    { id: 'TASK-2', title: 'Task', description: 'Task desciption', status: Status.TODO },
-    { id: 'TASK-3', title: 'Task', description: 'Task desciption', status: Status.IN_PROGRESS },
-    { id: 'TASK-4', title: 'Task', description: 'Task desciption', status: Status.IN_PROGRESS },
-    { id: 'TASK-5', title: 'Task', description: 'Task desciption', status: Status.DONE },
-    { id: 'TASK-6', title: 'Task', description: 'Task desciption', status: Status.DONE }
-  ];
+  const tasks = Array.from(new Array(12)).map<Task>((e, i) => ({
+    id: `TASK-${i}`,
+    title: `Task ${i}`,
+    description:
+      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam dignissimos vitae quos excepturi laboriosam ut consequatur sed dolorem amet reiciendis eos quas voluptas voluptatem dicta, minima, corporis soluta libero sunt!',
+    status: i < 4 ? Status.TODO : i < 8 && i >= 4 ? Status.IN_PROGRESS : Status.DONE
+  }));
 
   let columns: TaskColumn[] = [
     {
