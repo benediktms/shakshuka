@@ -1,46 +1,45 @@
 <script lang="ts">
-  import TaskCard from '$lib/components/TaskCard.svelte';
+  import Board from '$lib/components/Board/Board.svelte';
+  import { type Task, type TaskColumn, Status } from '$lib/types';
 
-  enum Status {
-    Todo,
-    InProgress,
-    Done
-  }
-
-  type Task = { title: string; description: string; content?: string; status: Status };
   const tasks: Array<Task> = [
-    { title: 'Task', description: 'Task desciption', status: Status.Todo },
-    { title: 'Task', description: 'Task desciption', status: Status.Todo },
-    { title: 'Task', description: 'Task desciption', status: Status.InProgress },
-    { title: 'Task', description: 'Task desciption', status: Status.InProgress },
-    { title: 'Task', description: 'Task desciption', status: Status.Done },
-    { title: 'Task', description: 'Task desciption', status: Status.Done }
+    {
+      id: 1,
+      title: 'Task',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam dignissimos vitae quos excepturi laboriosam ut consequatur sed dolorem amet reiciendis eos quas voluptas voluptatem dicta, minima, corporis soluta libero sunt!',
+      status: Status.Todo
+    },
+    { id: 2, title: 'Task', description: 'Task desciption', status: Status.Todo },
+    { id: 3, title: 'Task', description: 'Task desciption', status: Status.InProgress },
+    { id: 4, title: 'Task', description: 'Task desciption', status: Status.InProgress },
+    { id: 5, title: 'Task', description: 'Task desciption', status: Status.Done },
+    { id: 6, title: 'Task', description: 'Task desciption', status: Status.Done }
   ];
 
-  const tasksTodo = tasks.filter(t => t.status === Status.Todo);
-  const tasksInProgress = tasks.filter(t => t.status === Status.InProgress);
-  const tasksDone = tasks.filter(t => t.status === Status.Done);
+  let columns: TaskColumn[] = [
+    {
+      id: 'todo-column',
+      name: Status.Todo,
+      items: tasks.filter(t => t.status === Status.Todo)
+    },
+    {
+      id: 'in-progress-column',
+      name: Status.InProgress,
+      items: tasks.filter(t => t.status === Status.InProgress)
+    },
+    {
+      id: 'done-column',
+      name: Status.Done,
+      items: tasks.filter(t => t.status === Status.Done)
+    }
+  ];
+
+  function handleBoardUpdated(newColumnsData: TaskColumn[]) {
+    columns = newColumnsData;
+  }
 </script>
 
 <div class="container h-full">
-  <div class="grid-gap-5 grid h-full grid-cols-3 p-3">
-    <div class="flex flex-col px-2">
-      <h2 class="my-4 text-center text-lg">To do</h2>
-      {#each tasksTodo as { title, description }}
-        <TaskCard class="mb-2" {title} {description} />
-      {/each}
-    </div>
-    <div class="flex flex-col px-2">
-      <h2 class="my-4 text-center text-lg">In Progress</h2>
-      {#each tasksInProgress as { title, description }}
-        <TaskCard class="mb-2" {title} {description} />
-      {/each}
-    </div>
-    <div class="flex flex-col px-2">
-      <h2 class="my-4 text-center text-lg">Done</h2>
-      {#each tasksDone as { title, description }}
-        <TaskCard class="mb-2" {title} {description} />
-      {/each}
-    </div>
-  </div>
+  <Board {columns} onFinalUpdate={handleBoardUpdated} />
 </div>
