@@ -4,34 +4,34 @@
 
   const tasks: Array<Task> = [
     {
-      id: 1,
+      id: 'TASK-1',
       title: 'Task',
       description:
         'Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam dignissimos vitae quos excepturi laboriosam ut consequatur sed dolorem amet reiciendis eos quas voluptas voluptatem dicta, minima, corporis soluta libero sunt!',
-      status: Status.Todo
+      status: Status.TODO
     },
-    { id: 2, title: 'Task', description: 'Task desciption', status: Status.Todo },
-    { id: 3, title: 'Task', description: 'Task desciption', status: Status.InProgress },
-    { id: 4, title: 'Task', description: 'Task desciption', status: Status.InProgress },
-    { id: 5, title: 'Task', description: 'Task desciption', status: Status.Done },
-    { id: 6, title: 'Task', description: 'Task desciption', status: Status.Done }
+    { id: 'TASK-2', title: 'Task', description: 'Task desciption', status: Status.TODO },
+    { id: 'TASK-3', title: 'Task', description: 'Task desciption', status: Status.IN_PROGRESS },
+    { id: 'TASK-4', title: 'Task', description: 'Task desciption', status: Status.IN_PROGRESS },
+    { id: 'TASK-5', title: 'Task', description: 'Task desciption', status: Status.DONE },
+    { id: 'TASK-6', title: 'Task', description: 'Task desciption', status: Status.DONE }
   ];
 
   let columns: TaskColumn[] = [
     {
-      id: 'todo-column',
-      name: Status.Todo,
-      items: tasks.filter(t => t.status === Status.Todo)
+      id: 'task-todo-column',
+      name: Status.TODO,
+      items: tasks.filter(t => t.status === Status.TODO)
     },
     {
-      id: 'in-progress-column',
-      name: Status.InProgress,
-      items: tasks.filter(t => t.status === Status.InProgress)
+      id: 'task-in_progress-column',
+      name: Status.IN_PROGRESS,
+      items: tasks.filter(t => t.status === Status.IN_PROGRESS)
     },
     {
-      id: 'done-column',
-      name: Status.Done,
-      items: tasks.filter(t => t.status === Status.Done)
+      id: 'task-done-column',
+      name: Status.DONE,
+      items: tasks.filter(t => t.status === Status.DONE)
     }
   ];
 
@@ -41,5 +41,5 @@
 </script>
 
 <div class="container h-full">
-  <Board {columns} onFinalUpdate={handleBoardUpdated} />
+  <Board {columns} updateCallback={handleBoardUpdated} />
 </div>

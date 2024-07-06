@@ -12,8 +12,7 @@
   export { className as class };
 
   export let task: Task;
-  const { title, description } = task;
-  const id = `TASK-${task.id}`;
+  const { title, description, id } = task;
 
   let isExpanded = false;
   const truncatedDescription = description.slice(0, 80).concat('...');
@@ -27,10 +26,9 @@
         <Card.Title>{title}</Card.Title>
         <Badge variant="outline">{id}</Badge>
       </div>
-
-      {#if !isExpanded && isExpandable}
+      {#if !isExpanded}
         <Card.Description>
-          {truncatedDescription}
+          {isExpandable ? truncatedDescription : description}
         </Card.Description>
       {/if}
       <Collapsible.Content>

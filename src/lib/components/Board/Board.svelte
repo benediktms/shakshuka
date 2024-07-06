@@ -1,40 +1,26 @@
 <script lang="ts">
-  import { flip } from 'svelte/animate';
-  import { dndzone, type DndEvent } from 'svelte-dnd-action';
   import Column from './Column.svelte';
   import type { TaskColumn, Task } from '$lib/types';
-  const flipDurationMs = 300;
 
   export let columns: TaskColumn[];
-  export let onFinalUpdate: (tasks: TaskColumn[]) => void;
+  export let updateCallback: (tasks: TaskColumn[]) => void;
 
-  function handleDndConsiderColumns(e: CustomEvent<DndEvent<TaskColumn>>) {
-    columns = e.detail.items;
-  }
-  function handleDndFinalizeColumns(e: CustomEvent<DndEvent<TaskColumn>>) {
-    onFinalUpdate(e.detail.items);
-  }
-  function handleItemFinalize(columnIdx: number, newItems: Task[]) {
-    columns[columnIdx].items = newItems;
-    onFinalUpdate([...columns]);
+  function handleDropTaskOnColumn(columnIdx: number, newItems: Task[]) {
+    columns[columnIdx].items = newItems.map(t => ({ ...t, status: columns[columnIdx].name }));
+    updateCallback([...columns]);
   }
 </script>
 
-<section
-  use:dndzone={{ items: columns, flipDurationMs, type: 'column' }}
-  on:consider={handleDndConsiderColumns}
-  on:finalize={handleDndFinalizeColumns}
->
-  <div class="grid-gap-5 grid h-full w-full grid-cols-1 p-3 lg:grid-cols-3">
+<section id="task-board" class="h-full">
+  <div class="grid-gap-5 grid h-full w-full grid-cols-1 grid-rows-1 p-3 lg:grid-cols-3">
     {#each columns as { id, name, items }, idx (id)}
-      <div animate:flip={{ duration: flipDurationMs }}>
-        <Column
-          class="w-full"
-          {name}
-          {items}
-          onDrop={newItems => handleItemFinalize(idx, newItems)}
-        />
-      </div>
+      <Column
+        columnId={id}
+        class="h-full w-full"
+        {name}
+        tasks={items}
+        onDrop={newItems => handleDropTaskOnColumn(idx, newItems)}
+      />
     {/each}
   </div>
 </section>

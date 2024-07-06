@@ -1,14 +1,18 @@
 export enum Status {
-  Todo = 'Todo',
-  InProgress = 'InProgress',
-  Done = 'Done'
+  TODO = 'TODO',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE'
 }
 
 export type Task = {
-  id: number;
+  id: string;
   title: string;
   description: string;
   status: Status;
 };
 
-export type TaskColumn = { id: string; name: Status; items: Task[] };
+export type TaskColumnId = Lowercase<
+  `task-${Status.TODO}-column` | `task-${Status.DONE}-column` | `task-${Status.IN_PROGRESS}-column`
+>;
+
+export type TaskColumn = { id: TaskColumnId; name: Status; items: Task[] };
