@@ -38,9 +38,9 @@
     on:finalize={e => onDrop(e.detail.items)}
   >
     {#each tasks as task (task.id)}
-      <span animate:flip={{ duration: flipDurationMs }}>
+      <div animate:flip={{ duration: flipDurationMs }}>
         <TaskCard class="mb-3 w-full" {task} />
-      </span>
+      </div>
     {/each}
   </div>
 </div>
