@@ -1,7 +1,7 @@
 <script lang="ts">
   import '../app.pcss';
   import { onMount } from 'svelte';
-  import { theme } from '$lib/stores/themeStore';
+  import { theme } from '$lib/globalStores/themeStore';
 
   onMount(() => {
     const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
