@@ -5,39 +5,43 @@
   import ChevronsUp from 'lucide-svelte/icons/chevrons-up';
   import ChevronsDown from 'lucide-svelte/icons/chevrons-down';
   import type { HTMLAttributes } from 'svelte/elements';
-  import Separator from './ui/separator/separator.svelte';
-  import { fade } from 'svelte/transition';
+  import { Badge } from '$ui/badge';
+  import type { Task } from '$lib/types';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };
 
-  export let title: string;
-  export let description: string;
+  export let task: Task;
+  const { title, description } = task;
+  const id = `TASK-${task.id}`;
 
   let isExpanded = false;
-
   const truncatedDescription = description.slice(0, 80).concat('...');
+  const isExpandable = truncatedDescription.length < description.length;
 </script>
 
 <Card.Root class={className}>
-  <Card.Header>
-    <Card.Title>{title}</Card.Title>
-    {#if !isExpanded && truncatedDescription.length < description.length}
-      <Card.Description>{truncatedDescription}</Card.Description>
-    {:else}
-      <Card.Description>{description}</Card.Description>
-    {/if}
-  </Card.Header>
-  {#if $$slots.content || $$slots.footer}
-    <Collapsible.Root class="space-y-2">
-      <div class="ml-5 flex items-center justify-between space-x-4 p-1">
-        {#if !isExpanded}
-          <h4 class="text-xs font-semibold">details</h4>
-        {:else}
-          <span class="w-full">
-            <Separator class="w-full" />
-          </span>
-        {/if}
+  <Collapsible.Root>
+    <Card.Header>
+      <div class="flex items-center justify-between">
+        <Card.Title>{title}</Card.Title>
+        <Badge variant="outline">{id}</Badge>
+      </div>
+
+      {#if !isExpanded && isExpandable}
+        <Card.Description>
+          {truncatedDescription}
+        </Card.Description>
+      {/if}
+      <Collapsible.Content>
+        <Card.Description>
+          {description}
+        </Card.Description>
+      </Collapsible.Content>
+    </Card.Header>
+    {#if isExpandable}
+      <div class="ml-5 flex items-center justify-between p-1">
+        <h4 class="text-xs font-semibold">{isExpanded ? 'less' : 'details'}</h4>
         <Collapsible.Trigger asChild let:builder>
           <Button
             builders={[builder]}
@@ -55,20 +59,6 @@
           </Button>
         </Collapsible.Trigger>
       </div>
-      <Collapsible.Content class="space-y-2">
-        <div transition:fade>
-          {#if $$slots.content}
-            <Card.Content>
-              <slot name="content" />
-            </Card.Content>
-          {/if}
-          {#if $$slots.footer}
-            <Card.Footer>
-              <slot name="footer" />
-            </Card.Footer>
-          {/if}
-        </div>
-      </Collapsible.Content>
-    </Collapsible.Root>
-  {/if}
+    {/if}
+  </Collapsible.Root>
 </Card.Root>
