@@ -13,12 +13,12 @@
 
 <section id="task-board" class="h-full">
   <div class="grid-gap-5 grid h-full w-full grid-cols-1 grid-rows-1 p-3 lg:grid-cols-3">
-    {#each columns as { id, name, items }, idx (id)}
+    {#each columns as column, idx (column.id)}
       <Column
-        columnId={id}
+        columnId={column.id}
         class="h-full w-full"
-        {name}
-        tasks={items}
+        name={column.name}
+        tasks={column.items}
         onDrop={newItems => handleDropTaskOnColumn(idx, newItems)}
       />
     {/each}
