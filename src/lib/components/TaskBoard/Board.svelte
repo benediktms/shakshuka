@@ -12,7 +12,7 @@
 </script>
 
 <section id="task-board" class="h-full">
-  <div class="grid-gap-5 grid h-full w-full grid-cols-1 grid-rows-1 p-3 lg:grid-cols-3">
+  <div class="grid h-full w-full grid-cols-1 p-3 lg:grid-cols-3">
     {#each columns as column, idx (column.id)}
       <Column
         columnId={column.id}

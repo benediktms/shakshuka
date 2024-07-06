@@ -5,6 +5,7 @@
   import TaskCard from '$lib/components/TaskBoard/TaskCard.svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { cn } from '$lib/utils';
+  import { ScrollArea } from '$ui/scroll-area';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };
@@ -27,20 +28,23 @@
   }
 </script>
 
-<div id={columnId.toUpperCase()} class={cn(className, 'flex flex-col px-2')}>
+<div id={columnId.toUpperCase()} class={cn(className, 'flex flex-col overflow-y-hidden')}>
   <h2 class="my-4 text-center text-lg">{columnNameMap[name]}</h2>
-  <div
-    use:dndzone={{
-      items: tasks,
-      flipDurationMs
-    }}
-    on:consider={onConsider}
-    on:finalize={e => onDrop(e.detail.items)}
-  >
-    {#each tasks as task (task.id)}
-      <div animate:flip={{ duration: flipDurationMs }}>
-        <TaskCard class="mb-3 w-full" {task} />
-      </div>
-    {/each}
-  </div>
+  <ScrollArea>
+    <div
+      class="m-2 h-full pr-2"
+      use:dndzone={{
+        items: tasks,
+        flipDurationMs
+      }}
+      on:consider={onConsider}
+      on:finalize={e => onDrop(e.detail.items)}
+    >
+      {#each tasks as task (task.id)}
+        <div animate:flip={{ duration: flipDurationMs }}>
+          <TaskCard class="mb-3 w-full" {task} />
+        </div>
+      {/each}
+    </div>
+  </ScrollArea>
 </div>
