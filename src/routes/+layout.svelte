@@ -1,5 +1,4 @@
 <script lang="ts">
-  import ModeToggle from '@/components/ModeToggle.svelte';
   import '../app.pcss';
   import { onMount } from 'svelte';
   import { theme } from '$lib/stores/themeStore';
@@ -27,5 +26,6 @@
   });
 </script>
 
-<ModeToggle />
-<slot />
+<div class="h-dvh">
+  <slot />
+</div>
