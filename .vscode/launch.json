@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "type": "node-terminal",
+      "name": "Run Script: tauri dev",
+      "request": "launch",
+      "command": "pnpm run tauri dev",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
