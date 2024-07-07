@@ -4,6 +4,11 @@
   import Resizable from '$ui/resizable';
   import { currentlyFocusedTaskId } from './taskDetailsStore';
   import TaskDetails from './TaskDetails.svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
+  import { cn } from '$lib/utils';
+
+  let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
+  export { className as class };
 
   export let columns: TaskColumn[];
   export let updateCallback: (tasks: TaskColumn[]) => void;
@@ -18,9 +23,9 @@
   }
 </script>
 
-<section id="task-board" class="h-full">
+<section id="task-board" class={cn(className)}>
   <Resizable.PaneGroup direction="horizontal">
-    <Resizable.Pane>
+    <Resizable.Pane minSize={65}>
       <div class="grid h-full w-full grid-cols-1 p-3 lg:grid-cols-3">
         {#each columns as column, idx (column.id)}
           <Column

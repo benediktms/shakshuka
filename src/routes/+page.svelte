@@ -1,6 +1,11 @@
 <script lang="ts">
   import Board from '$lib/components/TaskBoard/Board.svelte';
   import { type Task, type TaskColumn, Status } from '$lib/components/TaskBoard/types';
+  import { cn } from '$lib/utils';
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
+  export { className as class };
 
   const tasks = Array.from(new Array(24)).map<Task>((e, i) => ({
     id: `TASK-${i}`,
@@ -35,6 +40,4 @@
   }
 </script>
 
-<div class="container h-full">
-  <Board {columns} updateCallback={handleBoardUpdated} />
-</div>
+<Board class={cn(className, 'h-full pt-[38px]')} {columns} updateCallback={handleBoardUpdated} />
