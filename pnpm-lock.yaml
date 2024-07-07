@@ -18,8 +18,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       lucide-svelte:
-        specifier: ^0.341.0
-        version: 0.341.0(svelte@4.2.18)
+        specifier: ^0.399.0
+        version: 0.399.0(svelte@4.2.18)
       svelte-dnd-action:
         specifier: ^0.9.49
         version: 0.9.49(svelte@4.2.18)
@@ -1446,8 +1446,8 @@ packages:
     resolution: {integrity: sha512-9/8QXrtbGeMB6LxwQd4x1tIMnsmUxMvIH/qWGsccz6bt9Uln3S+sgAaqfQNhbGA8ufzs2fHuP/yqapGgP9Hh2g==}
     engines: {node: '>=18'}
 
-  lucide-svelte@0.341.0:
-    resolution: {integrity: sha512-RdLUlxgm97pKGS5dKchdhLuxmYBpwpcLvZ5XQH3HPO5rZZU8JvfzFs8vnbZH/tsDeA0UeSzdzZyOYbWkOAbarA==}
+  lucide-svelte@0.399.0:
+    resolution: {integrity: sha512-NQ8AxNMKbIJsx7HV//gnAsIY1wJfb3rbXSK2S/ZDjIldvAEdzGngpUT8T8Q8zHYUuii0bavAmVARN8giR4vvpA==}
     peerDependencies:
       svelte: ^3 || ^4 || ^5.0.0-next.42
 
@@ -3583,7 +3583,7 @@ snapshots:
 
   lru-cache@10.3.1: {}
 
-  lucide-svelte@0.341.0(svelte@4.2.18):
+  lucide-svelte@0.399.0(svelte@4.2.18):
     dependencies:
       svelte: 4.2.18
 

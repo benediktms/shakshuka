@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { Button } from '$lib/components/ui/button';
   import Card from '$ui/card';
   import Collapsible from '$ui/collapsible';
-  import ChevronsUp from 'lucide-svelte/icons/chevrons-up';
-  import ChevronsDown from 'lucide-svelte/icons/chevrons-down';
+  import { ChevronsDown, ChevronsUp } from 'lucide-svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { Badge } from '$ui/badge';
   import type { Task } from '$lib/components/TaskBoard/types';
+  import { onDestroy } from 'svelte';
+  import Button from '$ui/button/button.svelte';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };
@@ -15,48 +15,74 @@
   const { title, description, id } = task;
 
   let isExpanded = false;
+  let isLocked = false;
   const truncatedDescription = description.slice(0, 80).concat('...');
-  const isExpandable = truncatedDescription.length < description.length;
+  const canBeExpanded = truncatedDescription.length < description.length;
+
+  let hoverTimer: ReturnType<typeof setTimeout>;
+
+  const debounce = (value: boolean) => {
+    clearTimeout(hoverTimer);
+    hoverTimer = setTimeout(
+      () => {
+        if (canBeExpanded && !isLocked) {
+          isExpanded = value;
+        }
+      },
+      value ? 200 : 100
+    );
+  };
+
+  function handleExpansion() {
+    if (isExpanded && !isLocked) {
+      isLocked = true;
+    } else if (!isExpanded && !isLocked) {
+      isExpanded = true;
+      isLocked = true;
+    } else if (isExpanded && isLocked) {
+      isExpanded = false;
+      isLocked = false;
+    }
+  }
+
+  onDestroy(() => clearTimeout(hoverTimer));
 </script>
 
 <Card.Root class={className}>
-  <Collapsible.Root>
-    <Card.Header>
-      <div class="flex items-center justify-between">
-        <Card.Title>{title}</Card.Title>
-        <Badge variant="outline">{id}</Badge>
-      </div>
-      {#if !isExpanded}
-        <Card.Description>
-          {isExpandable ? truncatedDescription : description}
-        </Card.Description>
-      {/if}
-      <Collapsible.Content>
-        <Card.Description>
-          {description}
-        </Card.Description>
-      </Collapsible.Content>
-    </Card.Header>
-    {#if isExpandable}
-      <div class="ml-5 flex items-center justify-between p-1">
-        <h4 class="text-xs font-semibold">{isExpanded ? 'less' : 'details'}</h4>
-        <Collapsible.Trigger asChild let:builder>
-          <Button
-            builders={[builder]}
-            variant="ghost"
-            size="sm"
-            class="w-9 p-2"
-            on:click={() => (isExpanded = !isExpanded)}
-          >
-            {#if !isExpanded}
-              <ChevronsDown class="h-4 w-4" />
-            {:else}
-              <ChevronsUp class="h-4 w-4" />
+  <Collapsible.Root bind:open={isExpanded}>
+    <Collapsible.Trigger />
+    <div
+      role="contentinfo"
+      on:mouseenter={() => debounce(true)}
+      on:mouseleave={() => debounce(false)}
+    >
+      <Card.Header>
+        <div class="align-center flex items-center justify-between">
+          <Card.Title>{title}</Card.Title>
+          <span class="align-center flex items-center justify-evenly">
+            {#if canBeExpanded}
+              <Button size="icon" variant="ghost" on:click={handleExpansion}>
+                {#if isLocked}
+                  <ChevronsUp class="h-4 w-4" />
+                {:else}
+                  <ChevronsDown class="h-4 w-4" />
+                {/if}
+              </Button>
             {/if}
-            <span class="sr-only">Toggle</span>
-          </Button>
-        </Collapsible.Trigger>
-      </div>
-    {/if}
+            <Badge variant="outline">{id}</Badge>
+          </span>
+        </div>
+        {#if !isExpanded}
+          <Card.Description>
+            {canBeExpanded ? truncatedDescription : description}
+          </Card.Description>
+        {/if}
+        <Collapsible.Content>
+          <Card.Description>
+            {description}
+          </Card.Description>
+        </Collapsible.Content>
+      </Card.Header>
+    </div>
   </Collapsible.Root>
 </Card.Root>
