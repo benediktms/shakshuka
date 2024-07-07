@@ -29,7 +29,7 @@
 </script>
 
 <div id={columnId.toUpperCase()} class={cn(className, 'flex flex-col overflow-y-hidden')}>
-  <h2 class="my-4 text-center text-lg">{columnNameMap[name]}</h2>
+  <h2 class="text-center text-lg">{columnNameMap[name]}</h2>
   <ScrollArea>
     <div
       class="m-2 h-full pr-2"

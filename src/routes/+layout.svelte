@@ -20,5 +20,13 @@
 </script>
 
 <div class="h-dvh">
+  <div
+    data-tauri-drag-region
+    class="fixed left-0 right-0 top-0 flex h-[34px] w-full items-center bg-decoration"
+  >
+    <div class="pointer-events-none mx-auto flex h-3/4">
+      <div class="pointer-events-auto">this is where the search bar should go</div>
+    </div>
+  </div>
   <slot />
 </div>
