@@ -7,6 +7,7 @@
   import type { Task } from '$lib/components/TaskBoard/types';
   import { onDestroy } from 'svelte';
   import Button from '$ui/button/button.svelte';
+  import { currentlyFocusedTaskId } from './taskDetailsStore';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };
@@ -50,7 +51,7 @@
 
 <Card.Root class={className}>
   <Collapsible.Root bind:open={isExpanded}>
-    <Collapsible.Trigger />
+    <Collapsible.Trigger class="hidden" />
     <div
       role="contentinfo"
       on:mouseenter={() => debounce(true)}
@@ -72,16 +73,18 @@
             <Badge variant="outline">{id}</Badge>
           </span>
         </div>
-        {#if !isExpanded}
-          <Card.Description>
-            {canBeExpanded ? truncatedDescription : description}
-          </Card.Description>
-        {/if}
-        <Collapsible.Content>
-          <Card.Description>
-            {description}
-          </Card.Description>
-        </Collapsible.Content>
+        <a href="#noopener" on:click={() => ($currentlyFocusedTaskId = id)}>
+          {#if !isExpanded}
+            <Card.Description>
+              {canBeExpanded ? truncatedDescription : description}
+            </Card.Description>
+          {/if}
+          <Collapsible.Content>
+            <Card.Description>
+              {description}
+            </Card.Description>
+          </Collapsible.Content>
+        </a>
       </Card.Header>
     </div>
   </Collapsible.Root>
