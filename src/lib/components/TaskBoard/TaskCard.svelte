@@ -18,6 +18,7 @@
   let isExpanded = false;
   let isLocked = false;
   const truncatedDescription = description.slice(0, 80).concat('...');
+
   const canBeExpanded = truncatedDescription.length < description.length;
 
   let hoverTimer: ReturnType<typeof setTimeout>;
@@ -73,7 +74,18 @@
             <Badge variant="outline">{id}</Badge>
           </span>
         </div>
-        <a href="#noopener" on:click={() => ($currentlyFocusedTaskId = id)}>
+        <a
+          href="#noopener"
+          on:click={() => {
+            if ($currentlyFocusedTaskId === id) {
+              $currentlyFocusedTaskId = undefined;
+              isLocked = false;
+            } else {
+              $currentlyFocusedTaskId = id;
+              isLocked = true;
+            }
+          }}
+        >
           {#if !isExpanded}
             <Card.Description>
               {canBeExpanded ? truncatedDescription : description}

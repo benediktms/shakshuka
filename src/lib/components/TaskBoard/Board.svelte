@@ -3,6 +3,7 @@
   import type { TaskColumn, Task } from '$lib/components/TaskBoard/types';
   import Resizable from '$ui/resizable';
   import { currentlyFocusedTaskId } from './taskDetailsStore';
+  import TaskDetails from './TaskDetails.svelte';
 
   export let columns: TaskColumn[];
   export let updateCallback: (tasks: TaskColumn[]) => void;
@@ -33,17 +34,17 @@
       </div>
     </Resizable.Pane>
     {#if !!$currentlyFocusedTaskId}
-      <Resizable.Handle withHandle />
+      <Resizable.Handle />
     {/if}
     {#if !!$currentlyFocusedTaskId}
       <Resizable.Pane
         defaultSize={33}
         collapsible
         collapsedSize={0}
+        minSize={25}
         onCollapse={() => ($currentlyFocusedTaskId = undefined)}
       >
-        <div>{findTaskForExpansion($currentlyFocusedTaskId).title}</div>
-        <button on:click={() => ($currentlyFocusedTaskId = undefined)}>reset</button>
+        <TaskDetails task={findTaskForExpansion($currentlyFocusedTaskId)} />
       </Resizable.Pane>
     {/if}
   </Resizable.PaneGroup>
