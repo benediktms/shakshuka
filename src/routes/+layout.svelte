@@ -2,6 +2,7 @@
   import '../app.pcss';
   import { onDestroy, onMount } from 'svelte';
   import { theme } from '$lib/globalStores/themeStore';
+  import CommandPallete from '$lib/components/CommandPallete/CommandPallete.svelte';
 
   const changeHandler = (e: MediaQueryListEvent) => {
     $theme = e.matches ? 'dark' : 'light';
@@ -22,10 +23,12 @@
 <div class="h-dvh">
   <div
     data-tauri-drag-region
-    class="fixed left-0 right-0 top-0 flex h-[34px] w-full items-center bg-decoration"
+    class="fixed left-0 right-0 top-0 flex h-[34px] w-full justify-around bg-decoration"
   >
-    <div class="pointer-events-none mx-auto flex h-3/4">
-      <div class="pointer-events-auto">this is where the search bar should go</div>
+    <div class="pointer-events-none flex h-full items-center">
+      <div class="pointer-events-auto">
+        <CommandPallete />
+      </div>
     </div>
   </div>
   <slot />

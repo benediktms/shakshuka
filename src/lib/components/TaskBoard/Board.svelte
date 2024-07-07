@@ -1,25 +1,25 @@
 <script lang="ts">
   import Column from './Column.svelte';
-  import type { TaskColumn, Task } from '$lib/components/TaskBoard/types';
+  import type { Task } from '$lib/components/TaskBoard/types';
   import Resizable from '$ui/resizable';
   import { currentlyFocusedTaskId } from './taskDetailsStore';
   import TaskDetails from './TaskDetails.svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { cn } from '$lib/utils';
+  import { tasksColumns } from '$lib/globalStores/tasksStore';
 
   let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
   export { className as class };
 
-  export let columns: TaskColumn[];
-  export let updateCallback: (tasks: TaskColumn[]) => void;
-
   function handleDropTaskOnColumn(columnIdx: number, newItems: Task[]) {
-    columns[columnIdx].items = newItems.map(t => ({ ...t, status: columns[columnIdx].name }));
-    updateCallback([...columns]);
+    $tasksColumns[columnIdx].items = newItems.map(t => ({
+      ...t,
+      status: $tasksColumns[columnIdx].name
+    }));
   }
 
   function findTaskForExpansion(taskId: string) {
-    return columns.flatMap(c => c.items).filter(task => task.id === taskId)[0];
+    return $tasksColumns.flatMap(c => c.items).filter(task => task.id === taskId)[0];
   }
 </script>
 
@@ -27,7 +27,7 @@
   <Resizable.PaneGroup direction="horizontal">
     <Resizable.Pane minSize={65}>
       <div class="grid h-full w-full grid-cols-1 p-3 lg:grid-cols-3">
-        {#each columns as column, idx (column.id)}
+        {#each $tasksColumns as column, idx (column.id)}
           <Column
             columnId={column.id}
             class="h-full w-full"
