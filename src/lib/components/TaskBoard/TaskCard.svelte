@@ -38,7 +38,7 @@
     <Collapsible.Trigger class="hidden" />
     <Card.Header>
       <div class="align-center flex items-center justify-between">
-        <Card.Title>{title}</Card.Title>
+        <Card.Title class="text-nowrap">{title}</Card.Title>
         <span class="align-center flex items-center justify-evenly">
           {#if canBeExpanded}
             <Button size="icon" variant="ghost" on:click={handleExpansion}>
@@ -49,7 +49,10 @@
               {/if}
             </Button>
           {/if}
-          <Badge variant={$currentlyFocusedTaskId === id ? 'default' : 'outline'}>{id}</Badge>
+          <Badge
+            class="text-nowrap"
+            variant={$currentlyFocusedTaskId === id ? 'default' : 'outline'}>{id}</Badge
+          >
         </span>
       </div>
       <a
