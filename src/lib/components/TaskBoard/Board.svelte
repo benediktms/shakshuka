@@ -24,13 +24,13 @@
 </script>
 
 <section id="task-board" class={cn(className)}>
-  <Resizable.PaneGroup direction="horizontal">
+  <Resizable.PaneGroup direction="horizontal" autoSaveId="task-board-panes">
     <Resizable.Pane minSize={65}>
-      <div class="grid h-full w-full grid-cols-1 p-3 lg:grid-cols-3">
+      <!-- TODO: create a proper single column view for small screens -->
+      <div class="grid h-full w-full grid-cols-1 px-2 lg:grid-cols-3">
         {#each $tasksColumns as column, idx (column.id)}
           <Column
             columnId={column.id}
-            class="h-full w-full"
             name={column.name}
             tasks={column.items}
             onDrop={newItems => handleDropTaskOnColumn(idx, newItems)}
