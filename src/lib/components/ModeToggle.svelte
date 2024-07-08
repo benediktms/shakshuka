@@ -2,7 +2,7 @@
   import { Sun } from 'lucide-svelte';
   import { Moon } from 'lucide-svelte';
   import { Button } from '$lib/components/ui/button';
-  import { theme } from '$lib/stores/themeStore';
+  import { theme } from '$lib/globalStores/themeStore';
 
   const toggleTheme = () => {
     theme.update(current => (current === 'light' ? 'dark' : 'light'));

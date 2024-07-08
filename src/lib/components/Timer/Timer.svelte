@@ -1,7 +1,11 @@
 <script lang="ts">
-  import { Button } from '@/components/ui/button';
-  import RadialProgress from '@/components/Timer/RadialProgress.svelte';
+  import RadialProgress from '$lib/components/Timer/RadialProgress.svelte';
+  import { Button } from '$ui/button';
   import { onMount } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
+
+  let className: HTMLAttributes<HTMLDivElement>['class'] = undefined;
+  export { className as class };
 
   export let timeFrame: number;
 
@@ -60,7 +64,7 @@
   });
 </script>
 
-<div class={$$props.class}>
+<div class={className}>
   <RadialProgress elapsed={Math.floor(timePassed / 1000)} totalMinutes={timeFrame} />
   {#if isRunning}
     <Button on:click={pauseCount} disabled={!isRunning}>stop timer</Button>

@@ -4,10 +4,10 @@
 mod system_tray;
 
 use serde::{Deserialize, Serialize};
-use tauri::{CustomMenuItem, LogicalSize, Manager, Size, SystemTray, SystemTrayMenu, WindowEvent};
+use tauri::{LogicalSize, Manager, Size, WindowEvent};
 use ts_rs::TS;
 
-use system_tray::system_tray_event_handler;
+use system_tray::{make_system_tray, system_tray_event_handler};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 #[tauri::command]
@@ -31,15 +31,6 @@ fn test_command() -> TestRes {
 }
 
 fn main() {
-    let quit = CustomMenuItem::new("quit", "Quit");
-    let hide = CustomMenuItem::new("hide", "Hide");
-    let show = CustomMenuItem::new("show", "Show");
-    let tray_menu = SystemTrayMenu::new()
-        .add_item(quit)
-        .add_item(hide)
-        .add_item(show);
-    let tray = SystemTray::new().with_menu(tray_menu);
-
     tauri::Builder::default()
         .setup(|app| {
             let window = app.get_window("main").unwrap();
@@ -53,7 +44,7 @@ fn main() {
 
             Ok(())
         })
-        .system_tray(tray)
+        .system_tray(make_system_tray())
         .on_system_tray_event(system_tray_event_handler())
         .on_window_event(|e| {
             let event = e.event();
